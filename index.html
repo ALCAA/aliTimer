@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ali Timer</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #f9f5ff, #dbe4f3);
+            color: #333;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: #6c5ce7;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .timer {
+            margin: 15px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            font-size: 1.6rem;
+            width: 90%;
+            max-width: 600px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .timer:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .timer span {
+            font-weight: bold;
+            color: #0984e3;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            margin-left: 10px;
+        }
+
+        .timer .label {
+            font-size: 1.4rem;
+            color: #6c5ce7;
+            display: flex;
+            align-items: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #636e72;
+        }
+
+        footer a {
+            color: #6c5ce7;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .emoji {
+            font-size: 1.6rem;
+            margin-right: 10px;
+        }
+
+        .timer-content {
+            display: flex;
+            flex-direction: column;
+            color: #e37ed6;
+            align-items: flex-end;
+            font-size: 1.3rem;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>🌸 Ali Timer 🌸</h1>
+
+    <div class="timer" id="skiTimer">
+        <div class="label"><span class="emoji">🎿</span>Antoine est-il en train de skier ?</div>
+        <div class="timer-content">Chargement...</div>
+    </div>
+    <div class="timer hidden" id="skiEndTimer">
+        <div class="label"><span class="emoji">⏱️</span> Temps avant le retour d'Antoine du ski</div>
+        <div class="timer-content">Chargement...</div>
+    </div>
+    <div class="timer" id="sundayTimer">
+        <div class="label"><span class="emoji">🚗</span>Antoine est-il sur Paris ?</div>
+        <div class="timer-content">Chargement...</div>
+    </div>
+    <div class="timer" id="mondayTimer">
+        <div class="label"><span class="emoji">📅</span>Temps avant notre prochain point :</div>
+        <div class="timer-content">Chargement...</div>
+    </div>
+    <div class="timer" id="thursdayTimer">
+        <div class="label"><span class="emoji">⛺</span>Temps avant la prochaine session camping :</div>
+        <div class="timer-content">Chargement...</div>
+    </div>
+
+    <footer>
+        Fait avec 💖 et un petit côté stylé 😎</a>
+    </footer>
+
+    <script>
+        function updateTimers() {
+            const now = new Date();
+
+            // Timer 1: Antoine et le ski
+            const skiStart = new Date();
+            skiStart.setHours(9, 30, 0, 0);
+            const skiEnd = new Date();
+            skiEnd.setHours(17, 0, 0, 0);
+
+            if (now >= skiStart && now <= skiEnd) {
+                document.getElementById('skiTimer').querySelector('.timer-content').textContent = "Antoine est en train de skier !";
+                document.getElementById('skiEndTimer').classList.remove('hidden');
+
+                const diffToSkiEnd = skiEnd - now;
+                const hours = Math.floor(diffToSkiEnd / (1000 * 60 * 60));
+                const minutes = Math.floor((diffToSkiEnd % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diffToSkiEnd % (1000 * 60)) / 1000);
+
+                document.getElementById('skiEndTimer').querySelector('.timer-content').textContent = `${hours} heures, ${minutes} minutes, ${seconds} secondes`;
+            } else {
+                document.getElementById('skiTimer').querySelector('.timer-content').textContent = "Antoine n'est pas en train de skier.";
+                document.getElementById('skiEndTimer').classList.add('hidden');
+            }
+
+            // Timer 2: Temps jusqu'à lundi 16h30
+            const nextMonday = new Date();
+            nextMonday.setDate(now.getDate() + ((1 - now.getDay() + 7) % 7)); // Prochain lundi
+            nextMonday.setHours(16, 30, 0, 0);
+            const diffToMonday = nextMonday - now;
+
+            if (diffToMonday > 0) {
+                const days = Math.floor(diffToMonday / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diffToMonday % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diffToMonday % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diffToMonday % (1000 * 60)) / 1000);
+
+                document.getElementById('mondayTimer').querySelector('.timer-content').textContent = `C'est dans ${days} jours, ${hours} heures, ${minutes} minutes, ${seconds} secondes`;
+            }
+
+            // Timer 3: Temps jusqu'à jeudi 6 février 17h30
+            const thursdayTarget = new Date();
+            thursdayTarget.setFullYear(now.getFullYear());
+            thursdayTarget.setMonth(1); // Février (0-indexé)
+            thursdayTarget.setDate(6);
+            thursdayTarget.setHours(17, 30, 0, 0);
+            const diffToThursday = thursdayTarget - now;
+
+            if (diffToThursday > 0) {
+                const days = Math.floor(diffToThursday / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diffToThursday % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diffToThursday % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diffToThursday % (1000 * 60)) / 1000);
+
+                document.getElementById('thursdayTimer').querySelector('.timer-content').textContent = `C'est dans ${days} jours, ${hours} heures, ${minutes} minutes, ${seconds} secondes`;
+            } else {
+                document.getElementById('thursdayTimer').querySelector('.timer-content').textContent = "La date de jeudi 6 février 17h30 est passée.";
+            }
+
+            const sundayTarget = new Date();
+            sundayTarget.setFullYear(now.getFullYear());
+            sundayTarget.setMonth(1); // Février (0-indexé)
+            sundayTarget.setDate(2);
+            sundayTarget.setHours(15, 30, 0, 0);
+            const diffToSunday = sundayTarget - now;
+
+            if (diffToSunday > 0) {
+                const days = Math.floor(diffToSunday / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diffToSunday % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diffToSunday % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diffToSunday % (1000 * 60)) / 1000);
+
+                document.getElementById('sundayTimer').querySelector('.timer-content').textContent = `Non, il revient dans ${days} jours, ${hours} heures, ${minutes} minutes, ${seconds} secondes`;
+            } else {
+                document.getElementById('sundayTimer').querySelector('.timer-content').textContent = "Oui !";
+            }
+        }
+
+        setInterval(updateTimers, 1000);
+        updateTimers();
+    </script>
+</body>
+</html>
