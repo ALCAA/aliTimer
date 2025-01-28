@@ -16,6 +16,14 @@
             background: linear-gradient(135deg, #f9f5ff, #dbe4f3);
             color: #333;
             text-align: center;
+            padding: 20px 10px; /* Ajoute un espace intérieur pour éviter que le contenu ne soit coupé */
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px 5px; /* Réduit légèrement le padding pour les petits écrans */
+            }
         }
 
         h1 {
@@ -23,11 +31,14 @@
             margin-bottom: 20px;
             color: #6c5ce7;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            margin-top: 0; /* Supprime tout margin indésirable */
+            padding-top: 10px; /* Ajoute un espace pour éviter qu'il soit coupé */
         }
 
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.5rem; /* Encore plus petit pour les petits écrans */
+                padding-top: 15px;
             }
         }
 
@@ -74,12 +85,15 @@
             font-size: 0,9rem;
             color: #636e72;
             padding: 10px; /* Ajoute un padding pour un espacement confortable */
+            margin-bottom: 0; /* Supprime tout margin indésirable */
+            padding-bottom: 10px; /* Ajoute un espace sous le footer */
         }
         @media (max-width: 768px) {
             footer {
                 font-size: 0.8rem; /* Texte encore plus réduit pour les petits écrans */
                 text-align: center; /* Centrer le texte pour une meilleure lisibilité */
                 padding: 5px; /* Moins d'espace sur mobile */
+                padding-bottom: 15px;
         }
 }
 
