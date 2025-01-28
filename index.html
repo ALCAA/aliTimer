@@ -19,10 +19,16 @@
         }
 
         h1 {
-            font-size: 3.5rem;
+            font-size: 2rem;
             margin-bottom: 20px;
             color: #6c5ce7;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem; /* Encore plus petit pour les petits écrans */
+            }
         }
 
         .timer {
@@ -65,9 +71,17 @@
 
         footer {
             margin-top: 20px;
-            font-size: 1rem;
+            font-size: 0,9rem;
             color: #636e72;
+            padding: 10px; /* Ajoute un padding pour un espacement confortable */
         }
+        @media (max-width: 768px) {
+            footer {
+                font-size: 0.8rem; /* Texte encore plus réduit pour les petits écrans */
+                text-align: center; /* Centrer le texte pour une meilleure lisibilité */
+                padding: 5px; /* Moins d'espace sur mobile */
+        }
+}
 
         footer a {
             color: #6c5ce7;
