@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ali Timer</title>
+    <div class="banner">
+        🎉 Une surprise arrive dans la journée ! 🎁
+    </div>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -19,6 +22,30 @@
             padding: 20px 10px; /* Ajoute un espace intérieur pour éviter que le contenu ne soit coupé */
             padding-top: 70px;
             box-sizing: border-box;
+        }
+        .banner {
+            width: 100%;
+            background: linear-gradient(90deg, #ff9ff3, #feca57);
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
         }
 
         @media (max-width: 768px) {
@@ -193,7 +220,7 @@
             }
 
             // Timer 3: Temps jusqu'à jeudi 6 février 17h30
-            const thursdayTarget = new Date();
+            const thursdayTarget = new Date(now.getFullYear(), 1, 6, 17, 30, 0, 0);
             thursdayTarget.setFullYear(now.getFullYear());
             thursdayTarget.setMonth(1); // Février (0-indexé)
             thursdayTarget.setDate(6);
@@ -211,10 +238,10 @@
                 document.getElementById('thursdayTimer').querySelector('.timer-content').textContent = "La date de jeudi 6 février 17h30 est passée.";
             }
 
-            const sundayTarget = new Date();
+            const sundayTarget = new Date(now.getFullYear(), 1, 2, 17, 30, 0, 0);
             sundayTarget.setFullYear(now.getFullYear());
             sundayTarget.setMonth(1); // Février (0-indexé)
-            sundayTarget.setDate(2);
+            sundayTarget.setDate(1);
             sundayTarget.setHours(15, 30, 0, 0);
             const diffToSunday = sundayTarget - now;
 
