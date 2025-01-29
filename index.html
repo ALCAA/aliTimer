@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ali Timer</title>
+    <title>🌸 Ali Timer 🌸</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -26,7 +26,6 @@
             color: #fff;
             font-size: 1.5rem;
             font-weight: bold;
-            text-align: center;
             padding: 10px 0;
             position: fixed;
             top: 0;
@@ -59,13 +58,13 @@
             color: #6c5ce7;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
             margin-top: 0; /* Supprime tout margin indésirable */
-            padding-top: 0px; /* Ajoute un espace pour éviter qu'il soit coupé */
+            padding-top: 500px; /* Ajoute un espace pour éviter qu'il soit coupé */
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1000px) {
             h1 {
                 font-size: 1.5rem; /* Encore plus petit pour les petits écrans */
-                padding-top: 150px;
+                padding-top: 650px;
             }
         }
 
@@ -147,12 +146,50 @@
             font-size: 1.3rem;
         }
 
+        .hidden {
+            display: none;
+        }
+
+        #surpriseTimer {
+            background: rgba(255, 223, 186, 0.8);
+            color: #d35400;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 15px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 0%;
+            max-width: 560px;
+            padding-bottom: 56.25%; /* Ratio 16:9 pour la vidéo */
+            margin: 0 auto;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+        }
+
+        #videoContainer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+        }
+
     </style>
 </head>
 <body>
     <h1>🌸 Ali Timer 🌸</h1>
     <div class="banner">
-        🎉 Une surprise arrive dans la journée ! 🎁
+        🎉 Une surprise arrive jeudi ! 🎁
     </div>
 
     <div class="timer" id="skiTimer">
@@ -174,6 +211,20 @@
     <div class="timer" id="thursdayTimer">
         <div class="label"><span class="emoji">⛺</span>Temps avant la prochaine session camping :</div>
         <div class="timer-content">Chargement...</div>
+    </div>
+
+    <div class="timer" id="surpriseTimer">
+        <div class="timer-content">Chargement...</div>
+    </div>
+    <div id="videoContainer" class="hidden">
+        <h2>🎥 La surprise est arrivée !</h2>
+        <iframe width="320" height="315" 
+            src="https://www.youtube.com/embed/zbmoQ3wYKFE" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+        </iframe>
     </div>
 
     <footer>
@@ -260,6 +311,28 @@
 
         setInterval(updateTimers, 1000);
         updateTimers();
+
+        function updateSurpriseTimer() {
+            const now = new Date();
+            const releaseDate = new Date(now.getFullYear(), 0, 30, 15, 30, 0); // 30 janvier à 15h30
+
+            const diff = releaseDate - now;
+
+            if (diff > 0) {
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('surpriseTimer').querySelector('.timer-content').textContent = `⏳ Temps avant la surprise : ${hours} heures, ${minutes} minutes, ${seconds} secondes`;
+            } else {
+                document.getElementById('surpriseTimer').style.display = "none"; // Cache le timer après expiration
+                document.getElementById('videoContainer').classList.remove('hidden'); // Affiche la vidéo
+            }
+        }
+
+        // Mettre à jour le timer toutes les secondes
+        setInterval(updateSurpriseTimer, 1000);
+        updateSurpriseTimer();
     </script>
 </body>
 </html>
