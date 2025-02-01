@@ -188,9 +188,6 @@
 </head>
 <body>
     <h1>🌸 Ali Timer 🌸</h1>
-    <div class="banner">
-        🎉 Une surprise arrive jeudi ! 🎁
-    </div>
 
     <div class="timer" id="skiTimer">
         <div class="label"><span class="emoji">🎿</span>Antoine est-il en train de skier ?</div>
@@ -216,16 +213,6 @@
     <div class="timer" id="surpriseTimer">
         <div class="timer-content">Chargement...</div>
     </div>
-    <div id="videoContainer" class="hidden">
-        <h2>🎥 La surprise est arrivée !</h2>
-        <iframe width="320" height="315" 
-            src="https://www.youtube.com/embed/zbmoQ3wYKFE" 
-            title="YouTube video player" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
-        </iframe>
-    </div>
 
     <footer>
         Fait avec 💖 et un petit côté stylé 😎</a>
@@ -242,7 +229,7 @@
             skiEnd.setHours(17, 0, 0, 0);
 
             if (now >= skiStart && now <= skiEnd) {
-                document.getElementById('skiTimer').querySelector('.timer-content').textContent = "Antoine est en train de skier !";
+                document.getElementById('skiTimer').querySelector('.timer-content').textContent = "Le ski est fini 🥲 !";
                 document.getElementById('skiEndTimer').classList.remove('hidden');
 
                 const diffToSkiEnd = skiEnd - now;
@@ -250,9 +237,9 @@
                 const minutes = Math.floor((diffToSkiEnd % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((diffToSkiEnd % (1000 * 60)) / 1000);
 
-                document.getElementById('skiEndTimer').querySelector('.timer-content').textContent = `${hours} heures, ${minutes} minutes, ${seconds} secondes`;
+                document.getElementById('skiEndTimer').querySelector('.timer-content').textContent = `Le ski est fini ! 🥲`;
             } else {
-                document.getElementById('skiTimer').querySelector('.timer-content').textContent = "Antoine n'est pas en train de skier.";
+                document.getElementById('skiTimer').querySelector('.timer-content').textContent = "Le ski est fini ! 🥲";
                 document.getElementById('skiEndTimer').classList.add('hidden');
             }
 
@@ -293,8 +280,8 @@
             const sundayTarget = new Date(now.getFullYear(), 1, 2, 17, 30, 0, 0);
             sundayTarget.setFullYear(now.getFullYear());
             sundayTarget.setMonth(1); // Février (0-indexé)
-            sundayTarget.setDate(1);
-            sundayTarget.setHours(15, 30, 0, 0);
+            sundayTarget.setDate(2);
+            sundayTarget.setHours(18, 30, 0, 0);
             const diffToSunday = sundayTarget - now;
 
             if (diffToSunday > 0) {
