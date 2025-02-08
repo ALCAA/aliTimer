@@ -17,7 +17,7 @@
             color: #333;
             text-align: center;
             padding: 20px 10px; /* Ajoute un espace intérieur pour éviter que le contenu ne soit coupé */
-            padding-top: 70px;
+            padding-top: 40px;
             box-sizing: border-box;
         }
         .banner {
@@ -58,13 +58,12 @@
             color: #6c5ce7;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
             margin-top: 0; /* Supprime tout margin indésirable */
-            padding-top: 175px; /* Ajoute un espace pour éviter qu'il soit coupé */
         }
 
         @media (max-width: 1000px) {
             h1 {
                 font-size: 1.5rem; /* Encore plus petit pour les petits écrans */
-                padding-top: 275px;
+                padding-top: 180px;
             }
         }
 
@@ -189,30 +188,20 @@
 <body>
     <h1>🌸 Ali Timer 🌸</h1>
 
-    <div class="timer" id="skiTimer">
-        <div class="label"><span class="emoji">🎿</span>Antoine est-il en train de skier ?</div>
-        <div class="timer-content">Chargement...</div>
-    </div>
-    <div class="timer hidden" id="skiEndTimer">
-        <div class="label"><span class="emoji">⏱️</span> Temps avant le retour d'Antoine du ski</div>
-        <div class="timer-content">Chargement...</div>
-    </div>
-    <div class="timer" id="sundayTimer">
-        <div class="label"><span class="emoji">🚗</span>Antoine est-il sur Paris ?</div>
-        <div class="timer-content">Chargement...</div>
     </div>
     <div class="timer" id="mondayTimer">
         <div class="label"><span class="emoji">📅</span>Temps avant notre prochain point :</div>
         <div class="timer-content">Chargement...</div>
     </div>
     <div class="timer" id="thursdayTimer">
-        <div class="label"><span class="emoji">⛺</span>Temps avant la prochaine session camping :</div>
+        <div class="label"><span class="emoji">⛺</span>Temps avant le prochain camping :</div>
+        <div class="timer-content">Inconnu actuellement  🥺🥺</div>
+    </div>
+    <div class="timer" id="RunnerTimer">
+        <div class="label"><span class="emoji">🏃‍♀️🏃</span>Temps avant la sortie footing :</div>
         <div class="timer-content">Chargement...</div>
     </div>
 
-    <div class="timer" id="surpriseTimer">
-        <div class="timer-content">Chargement...</div>
-    </div>
 
     <footer>
         Fait avec 💖 et un petit côté stylé 😎</a>
@@ -222,30 +211,11 @@
         function updateTimers() {
             const now = new Date();
 
-            // Timer 1: Antoine et le ski
-            const skiStart = new Date();
-            skiStart.setHours(9, 30, 0, 0);
-            const skiEnd = new Date();
-            skiEnd.setHours(17, 0, 0, 0);
-
-            if (now >= skiStart && now <= skiEnd) {
-                document.getElementById('skiTimer').querySelector('.timer-content').textContent = "Le ski est fini 🥲 !";
-                document.getElementById('skiEndTimer').classList.remove('hidden');
-
-                const diffToSkiEnd = skiEnd - now;
-                const hours = Math.floor(diffToSkiEnd / (1000 * 60 * 60));
-                const minutes = Math.floor((diffToSkiEnd % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diffToSkiEnd % (1000 * 60)) / 1000);
-
-                document.getElementById('skiEndTimer').querySelector('.timer-content').textContent = `Le ski est fini ! 🥲`;
-            } else {
-                document.getElementById('skiTimer').querySelector('.timer-content').textContent = "Le ski est fini ! 🥲";
-                document.getElementById('skiEndTimer').classList.add('hidden');
-            }
 
             // Timer 2: Temps jusqu'à lundi 16h30
             const nextMonday = new Date();
-            nextMonday.setDate(now.getDate() + ((1 - now.getDay() + 7) % 7)); // Prochain lundi
+            nextMonday.setMonth(1);
+            nextMonday.setDate(17); // Prochain lundi
             nextMonday.setHours(16, 30, 0, 0);
             const diffToMonday = nextMonday - now;
 
@@ -258,68 +228,27 @@
                 document.getElementById('mondayTimer').querySelector('.timer-content').textContent = `C'est dans ${days} jours, ${hours} heures, ${minutes} minutes, ${seconds} secondes`;
             }
 
-            // Timer 3: Temps jusqu'à jeudi 6 février 17h30
-            const thursdayTarget = new Date(now.getFullYear(), 1, 6, 17, 30, 0, 0);
-            thursdayTarget.setFullYear(now.getFullYear());
-            thursdayTarget.setMonth(1); // Février (0-indexé)
-            thursdayTarget.setDate(6);
-            thursdayTarget.setHours(17, 30, 0, 0);
-            const diffToThursday = thursdayTarget - now;
 
-            if (diffToThursday > 0) {
-                const days = Math.floor(diffToThursday / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diffToThursday % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diffToThursday % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diffToThursday % (1000 * 60)) / 1000);
 
-                document.getElementById('thursdayTimer').querySelector('.timer-content').textContent = `C'est dans ${days} jours, ${hours} heures, ${minutes} minutes, ${seconds} secondes`;
-            } else {
-                document.getElementById('thursdayTimer').querySelector('.timer-content').textContent = "La date de jeudi 6 février 17h30 est passée.";
-            }
+            // Timer 2: Temps jusqu'à lundi 16h30
+            const nextRunning = new Date();
+            nextRunning.setMonth(1);
+            nextRunning.setDate(22); // Prochain lundi
+            nextRunning.setHours(15, 30, 0, 0);
+            const diffToRunning = nextRunning - now;
 
-            const sundayTarget = new Date(now.getFullYear(), 1, 2, 17, 30, 0, 0);
-            sundayTarget.setFullYear(now.getFullYear());
-            sundayTarget.setMonth(1); // Février (0-indexé)
-            sundayTarget.setDate(2);
-            sundayTarget.setHours(18, 30, 0, 0);
-            const diffToSunday = sundayTarget - now;
+            if (diffToRunning > 0) {
+                const days = Math.floor(diffToRunning / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diffToRunning % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diffToRunning % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diffToRunning % (1000 * 60)) / 1000);
 
-            if (diffToSunday > 0) {
-                const days = Math.floor(diffToSunday / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diffToSunday % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diffToSunday % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diffToSunday % (1000 * 60)) / 1000);
-
-                document.getElementById('sundayTimer').querySelector('.timer-content').textContent = `Non, il revient dans ${days} jours, ${hours} heures, ${minutes} minutes, ${seconds} secondes`;
-            } else {
-                document.getElementById('sundayTimer').querySelector('.timer-content').textContent = "Oui !";
+                document.getElementById('RunnerTimer').querySelector('.timer-content').textContent = `C'est dans ${days} jours, ${hours} heures, ${minutes} minutes, ${seconds} secondes`;
             }
         }
 
         setInterval(updateTimers, 1000);
         updateTimers();
-
-        function updateSurpriseTimer() {
-            const now = new Date();
-            const releaseDate = new Date(now.getFullYear(), 0, 30, 15, 30, 0); // 30 janvier à 15h30
-
-            const diff = releaseDate - now;
-
-            if (diff > 0) {
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-                document.getElementById('surpriseTimer').querySelector('.timer-content').textContent = `⏳ Temps avant la surprise : ${hours} heures, ${minutes} minutes, ${seconds} secondes`;
-            } else {
-                document.getElementById('surpriseTimer').style.display = "none"; // Cache le timer après expiration
-                document.getElementById('videoContainer').classList.remove('hidden'); // Affiche la vidéo
-            }
-        }
-
-        // Mettre à jour le timer toutes les secondes
-        setInterval(updateSurpriseTimer, 1000);
-        updateSurpriseTimer();
     </script>
 </body>
 </html>
