@@ -193,8 +193,8 @@
         <div class="label"><span class="emoji">📅</span>Temps avant notre prochain point :</div>
         <div class="timer-content">Chargement...</div>
     </div>
-    <div class="timer" id="thursdayTimer">
-        <div class="label"><span class="emoji">⛺</span>Temps avant le prochain camping :</div>
+    <div class="timer" id="PointTimer">
+        <div class="label"><span class="emoji">☺️</span>Temps avant notre prochaine sortie :</div>
         <div class="timer-content">Inconnu actuellement  🥺🥺</div>
     </div>
     <div class="timer" id="RunnerTimer">
@@ -230,7 +230,7 @@
 
 
 
-            // Timer 2: Temps jusqu'à lundi 16h30
+            // Timer 2: Temps jusqu'à la course
             const nextRunning = new Date();
             nextRunning.setMonth(1);
             nextRunning.setDate(22); // Prochain lundi
@@ -244,6 +244,22 @@
                 const seconds = Math.floor((diffToRunning % (1000 * 60)) / 1000);
 
                 document.getElementById('RunnerTimer').querySelector('.timer-content').textContent = `C'est dans ${days} jours, ${hours} heures, ${minutes} minutes, ${seconds} secondes`;
+            }
+
+            // Timer 2: Temps jusqu'à la course
+            const nextpoint = new Date();
+            nextpoint.setMonth(1);
+            nextpoint.setDate(14); // Prochain lundi
+            nextpoint.setHours(18, 30, 0, 0);
+            const diffTopoint = nextpoint - now;
+
+            if (diffTopoint > 0) {
+                const days = Math.floor(diffTopoint / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diffTopoint % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diffTopoint % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diffTopoint % (1000 * 60)) / 1000);
+
+                document.getElementById('PointTimer').querySelector('.timer-content').textContent = `C'est dans ${days} jours, ${hours} heures, ${minutes} minutes, ${seconds} secondes`;
             }
         }
 
