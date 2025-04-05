@@ -164,8 +164,7 @@
     </div>
 
     <script>
-        // Mot de passe de l'administration (à changer en production)
-        const ADMIN_PASSWORD = "alitimer2024";
+        const ENCODED_PASSWORD = 'YWxpdGltZXIyMDI0';
 
         // Gestion de la connexion
         document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -173,12 +172,15 @@
             const password = document.getElementById('password').value;
             const errorMessage = document.getElementById('errorMessage');
 
-            if (password === ADMIN_PASSWORD) {
+            // Décoder le mot de passe stocké
+            const correctPassword = atob(ENCODED_PASSWORD);
+
+            if (password === correctPassword) {
                 document.getElementById('loginSection').style.display = 'none';
                 document.getElementById('adminSection').style.display = 'block';
                 errorMessage.textContent = '';
                 localStorage.setItem('isAdmin', 'true');
-                displayEvents(); // Afficher les événements après la connexion
+                displayEvents();
             } else {
                 errorMessage.textContent = 'Mot de passe incorrect';
             }
