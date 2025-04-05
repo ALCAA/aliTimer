@@ -193,7 +193,7 @@
     <script>
         // Données des événements
         const eventsData = {
-            events: [
+            events: JSON.parse(localStorage.getItem('events')) || [
                 {
                     id: 1,
                     title: "Notre prochain point",

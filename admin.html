@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌸 Admin Ali Timer 🌸</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fff0f5, #ffd6e7);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 100 100'%3E%3Ctext x='50' y='50' font-size='40' text-anchor='middle' dominant-baseline='middle' fill='%23ff69b4' fill-opacity='0.2'%3E♥%3C/text%3E%3C/svg%3E");
+            background-size: 60px 60px;
+            z-index: -1;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 0.25;
+            }
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 182, 193, 0.3);
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 400px;
+            margin: 2rem auto;
+            box-shadow: 0 10px 20px rgba(255, 182, 193, 0.2);
+        }
+
+        .admin-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 182, 193, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 182, 193, 0.3);
+        }
+
+        input, select {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 182, 193, 0.5);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ff69b4;
+            box-shadow: 0 0 0 2px rgba(255, 105, 180, 0.2);
+        }
+
+        button {
+            background: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #ff1493;
+            transform: translateY(-2px);
+        }
+
+        .delete-btn {
+            background: #ff6b6b;
+        }
+
+        .delete-btn:hover {
+            background: #ff4757;
+        }
+
+        h1 {
+            color: #d282aa;
+            text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.3);
+        }
+
+        .error-message {
+            color: #ff4757;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body class="py-8 px-4">
+    <div id="loginSection" class="max-w-4xl mx-auto relative">
+        <h1 class="text-4xl font-bold text-center text-pink-600 mb-8">
+            🌸 Admin Ali Timer 🌸
+        </h1>
+        <div class="login-card">
+            <h2 class="text-2xl font-semibold mb-4 text-center">Connexion</h2>
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block mb-2">Mot de passe</label>
+                    <input type="password" id="password" class="w-full" required>
+                    <div id="errorMessage" class="error-message"></div>
+                </div>
+                <button type="submit" class="w-full">Se connecter</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="adminSection" class="max-w-4xl mx-auto relative" style="display: none;">
+        <h1 class="text-4xl font-bold text-center text-pink-600 mb-8">
+            🌸 Admin Ali Timer 🌸
+        </h1>
+
+        <div class="admin-card mb-8">
+            <h2 class="text-2xl font-semibold mb-4">Ajouter un nouvel événement</h2>
+            <form id="addEventForm" class="space-y-4">
+                <div>
+                    <label class="block mb-2">Titre</label>
+                    <input type="text" id="eventTitle" class="w-full" required>
+                </div>
+                <div>
+                    <label class="block mb-2">Date et heure</label>
+                    <input type="datetime-local" id="eventDate" class="w-full">
+                </div>
+                <div>
+                    <label class="block mb-2">Emoji</label>
+                    <input type="text" id="eventEmoji" class="w-full" placeholder="Ex: 📅">
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="eventUnknown" class="mr-2">
+                    <label>Date inconnue</label>
+                </div>
+                <button type="submit" class="w-full">Ajouter l'événement</button>
+            </form>
+        </div>
+
+        <div id="eventsList" class="space-y-4">
+            <!-- Les événements seront affichés ici -->
+        </div>
+    </div>
+
+    <script>
+        // Mot de passe de l'administration (à changer en production)
+        const ADMIN_PASSWORD = "alitimer2024";
+
+        // Gestion de la connexion
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('adminSection').style.display = 'block';
+                errorMessage.textContent = '';
+                localStorage.setItem('isAdmin', 'true');
+                displayEvents(); // Afficher les événements après la connexion
+            } else {
+                errorMessage.textContent = 'Mot de passe incorrect';
+            }
+        });
+
+        // Charger les événements depuis le localStorage ou utiliser les données par défaut
+        let events = JSON.parse(localStorage.getItem('events')) || [
+            {
+                id: 1,
+                title: "Notre prochain point",
+                date: "2024-02-24T16:30:00",
+                emoji: "📅",
+                isUnknown: true
+            },
+            {
+                id: 2,
+                title: "Notre prochaine sortie",
+                date: "2024-02-22T15:30:00",
+                emoji: "☺️",
+                isUnknown: true
+            },
+            {
+                id: 3,
+                title: "Notre prochain voyage",
+                emoji: "✈️",
+                date: "2025-04-18T18:30:00",
+                isUnknown: false
+            }
+        ];
+
+        // Sauvegarder les événements par défaut si aucun n'existe
+        if (!localStorage.getItem('events')) {
+            saveEvents();
+        }
+
+        // Fonction pour sauvegarder les événements
+        function saveEvents() {
+            localStorage.setItem('events', JSON.stringify(events));
+        }
+
+        // Fonction pour afficher les événements
+        function displayEvents() {
+            const container = document.getElementById('eventsList');
+            container.innerHTML = '';
+
+            events.forEach(event => {
+                const eventCard = document.createElement('div');
+                eventCard.className = 'admin-card';
+                eventCard.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-semibold">${event.emoji} ${event.title}</h3>
+                            <p class="text-gray-600">${event.isUnknown ? 'Date à définir' : new Date(event.date).toLocaleString()}</p>
+                        </div>
+                        <button class="delete-btn" onclick="deleteEvent(${event.id})">Supprimer</button>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="editEvent(${event.id})">Modifier</button>
+                        <button onclick="toggleUnknown(${event.id})">${event.isUnknown ? 'Définir une date' : 'Marquer comme inconnu'}</button>
+                    </div>
+                `;
+                container.appendChild(eventCard);
+            });
+        }
+
+        // Fonction pour ajouter un événement
+        document.getElementById('addEventForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newEvent = {
+                id: Date.now(),
+                title: document.getElementById('eventTitle').value,
+                date: document.getElementById('eventDate').value,
+                emoji: document.getElementById('eventEmoji').value,
+                isUnknown: document.getElementById('eventUnknown').checked
+            };
+
+            events.push(newEvent);
+            saveEvents();
+            displayEvents();
+            this.reset();
+        });
+
+        // Fonction pour supprimer un événement
+        function deleteEvent(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')) {
+                events = events.filter(event => event.id !== id);
+                saveEvents();
+                displayEvents();
+            }
+        }
+
+        // Fonction pour modifier un événement
+        function editEvent(id) {
+            const event = events.find(e => e.id === id);
+            if (event) {
+                document.getElementById('eventTitle').value = event.title;
+                document.getElementById('eventDate').value = event.date;
+                document.getElementById('eventEmoji').value = event.emoji;
+                document.getElementById('eventUnknown').checked = event.isUnknown;
+                
+                // Supprimer l'ancien événement
+                events = events.filter(e => e.id !== id);
+                saveEvents();
+                displayEvents();
+            }
+        }
+
+        // Fonction pour basculer entre date connue/inconnue
+        function toggleUnknown(id) {
+            const event = events.find(e => e.id === id);
+            if (event) {
+                event.isUnknown = !event.isUnknown;
+                saveEvents();
+                displayEvents();
+            }
+        }
+
+        // Afficher les événements au chargement (si connecté)
+        if (localStorage.getItem('isAdmin') === 'true') {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminSection').style.display = 'block';
+            displayEvents();
+        }
+    </script>
+</body>
+</html> 
